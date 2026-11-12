@@ -1,0 +1,18 @@
+name: Auto-Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Läuft täglich um 00:00 Uhr UTC
+  workflow_dispatch: # Erlaubt es dir, den Sync jederzeit manuell per Button zu starten
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Wichtig, damit die Action in den Fork schreiben darf
+
+    steps:
+      - name: Sync repository
+        run: gh repo sync $GITHUB_REPOSITORY -b main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
